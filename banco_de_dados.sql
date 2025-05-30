@@ -1,8 +1,9 @@
 CREATE DATABASE empresa;
 CREATE USER 'devuser'@'localhost' IDENTIFIED BY '123456';
-GRANT ALL PRIVILEGES ON empresa.* TO 'devuser'@'localhost';
-FLUSH PRIVILEGES;
 
+GRANT ALL PRIVILEGES ON *.* TO 'devuser'@'localhost';
+SELECT * FROM mysql.user;
+FLUSH PRIVILEGES;
 
 USE empresa;
 CREATE TABLE pessoa (
@@ -10,7 +11,10 @@ CREATE TABLE pessoa (
     nome           VARCHAR(100),
     email          VARCHAR(100)
 );
-
+SET foreign_key_checks = 0;
+SET foreign_key_checks = 1;
+truncate TABLE pessoa;
+truncate TABLE funcionario;
 CREATE TABLE funcionario (
     id             INT PRIMARY KEY,
     matricula      VARCHAR(20),
@@ -39,6 +43,7 @@ INSERT INTO pessoa (id, nome, email) VALUES
 (9, 'Isabela Ferreira', 'isabela.ferreira@email.com'),
 (10, 'João Matos', 'joao.matos@email.com');
 
+SELECT * FROM funcionario; 
 INSERT INTO funcionario (id, matricula, departamento) VALUES
 (1, 'F001', 'TI'),
 (2, 'F002', 'RH'),
@@ -62,3 +67,16 @@ INSERT INTO projeto (nome, descricao, id_funcionario) VALUES
 ('Estoque Inteligente', 'Implementação de sistema de controle por RFID.', 8),
 ('Contabilidade 4.0', 'Automatização dos relatórios contábeis.', 9),
 ('Monitoramento TI', 'Sistema de monitoramento proativo da infraestrutura.', 10);
+
+
+SELECT * FROM pessoa;
+SELECT * FROM Funcionario;
+
+DELETE FROM pessoa
+WHERE id  = ""
+
+DELETE FROM funcionario
+WHERE id  = ""
+
+
+SELECT p.id, p.nome, p.email, f.matricula, f.departamento FROM pessoa p INNER JOIN funcionario f ON p.id = f.id 
