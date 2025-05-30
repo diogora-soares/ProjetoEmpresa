@@ -37,8 +37,10 @@ public class Principal {
             System.out.println("Funcionário com id 2 não encontrado para exclusão.");
         }*/
 
-        
-        Funcionario.listarFuncionarios();
+        int idParaConsultar = 1; // ID do funcionário que deseja buscar
+        // Chama o método consultaPorId e recebe o objeto Funcionario
+        Funcionario func = Funcionario.consultaPorId(idParaConsultar);
+        //Funcionario.listarFuncionarios();
 
 
     }

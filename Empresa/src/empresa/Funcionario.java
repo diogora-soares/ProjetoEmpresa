@@ -174,7 +174,7 @@ public class Funcionario extends Pessoa {
                 System.out.println("EMAIL: " + rs.getString("email"));
                 System.out.println("MATRICULA: " + rs.getString("matricula"));
                 System.out.println("DEPARTAMENTO: " + rs.getString("departamento"));
-                System.out.println("--------------------------------------");
+                System.out.println("-   -------------------------------------");
             }
         } catch (Exception e) {
             System.out.println("Erro ao listar Funcionario " + e.getMessage());
@@ -182,6 +182,39 @@ public class Funcionario extends Pessoa {
         
         return listFunc;
     }
+
+    public static Funcionario consultaPorId(int id) throws ClassNotFoundException {
+    String sql = "SELECT p.nome, p.email, f.matricula, f.departamento " +
+                 "FROM pessoa p JOIN funcionario f ON p.id = f.id WHERE p.id = ?";
+    Connection con = Conexao.conectar();
+    try {
+        PreparedStatement stm = con.prepareStatement(sql);
+        stm.setInt(1, id);
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            Funcionario func = new Funcionario(
+                id,
+                rs.getString("nome"),
+                rs.getString("email"),
+                rs.getString("matricula"),
+                rs.getString("departamento")
+            );
+            // Imprime os dados do funcionário aqui
+            System.out.println("Funcionário encontrado:");
+            System.out.println("ID: " + func.getId());
+            System.out.println("Nome: " + func.getNome());
+            System.out.println("Email: " + func.getEmail());
+            System.out.println("Matrícula: " + func.getMatricula());
+            System.out.println("Departamento: " + func.getDepartamento());
+            return func;
+        }
+    } catch (SQLException e) {
+        System.err.println("Erro ao buscar funcionário: " + e.getMessage());
+    }
+    System.out.println("Funcionário com id " + id + " não encontrado.");
+    return null;
+}
+
 
     // Getters e Setters
     public String getMatricula() {
