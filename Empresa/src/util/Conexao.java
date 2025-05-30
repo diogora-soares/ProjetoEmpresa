@@ -19,7 +19,7 @@ public class Conexao {
             if (con != null) {
                 System.out.println("Conexão estabelecida com sucesso!");
             } else {
-                System.out.println("Falha ao estabelecer conexão.");
+                System.err.println("Falha ao estabelecer conexão.");
             }
         } catch (SQLException ex) {
             System.err.println("Erro ao conectar com o banco: " + ex.getMessage());
