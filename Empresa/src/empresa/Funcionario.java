@@ -1,6 +1,7 @@
 package empresa;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import util.Conexao;
@@ -150,7 +151,37 @@ public class Funcionario extends Pessoa {
         return null;
     }
 
-    //public List<Funcionario> listaFuncionarios
+    public static List<Funcionario> listarFuncionarios() throws ClassNotFoundException{
+        List<Funcionario> listFunc = new ArrayList<>();
+        Connection con = Conexao.conectar();
+        
+        String sql = "SELECT";
+        sql += " p.id, ";
+        sql += " p.nome, ";
+        sql += " p.email, ";
+        sql += " f.matricula, ";
+        sql += " f.departamento ";
+        sql += " FROM pessoa p  ";
+        sql += " INNER JOIN funcionario f ";
+        sql += " ON p.id = f.id ";
+        System.out.println("--------------------------------------");
+        try {
+            PreparedStatement stm = con.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("id"));
+                System.out.println("NOME: " + rs.getString("nome"));
+                System.out.println("EMAIL: " + rs.getString("email"));
+                System.out.println("MATRICULA: " + rs.getString("matricula"));
+                System.out.println("DEPARTAMENTO: " + rs.getString("departamento"));
+                System.out.println("--------------------------------------");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar Funcionario " + e.getMessage());
+        }
+        
+        return listFunc;
+    }
 
     // Getters e Setters
     public String getMatricula() {

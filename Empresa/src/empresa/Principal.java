@@ -26,7 +26,7 @@ public class Principal {
 
         
         // Exemplo: excluir funcionário com id 2
-        Funcionario funcParaExcluir = Funcionario.buscarPorId(2);
+        /*Funcionario funcParaExcluir = Funcionario.buscarPorId(2);
         if (funcParaExcluir != null) {
             if (funcParaExcluir.excluirFuncionario()) {
                 System.out.println("Funcionário excluído com sucesso!");
@@ -35,7 +35,11 @@ public class Principal {
             }
         } else {
             System.out.println("Funcionário com id 2 não encontrado para exclusão.");
-        }
+        }*/
+
+        
+        Funcionario.listarFuncionarios();
+
 
     }
 }
