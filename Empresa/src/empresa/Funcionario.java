@@ -3,25 +3,31 @@ package empresa;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import util.Conexao;
 
+// Classe que representa um funcionário, estendendo a classe Pessoa.
+// Contém métodos para gerenciar funcionários no banco de dados.
 public class Funcionario extends Pessoa {
-    private String matricula;
-    private String departamento;
+    private String matricula; // Matrícula do funcionário
+    private String departamento; // Departamento do funcionário
 
+    
+    // Construtor sem ID, pois será gerado pelo banco.
     public Funcionario(String nome, String email, String matricula, String departamento) {
         super(nome, email);
         this.matricula = matricula;
         this.departamento = departamento;
     }
 
+
+    // Construtor com ID (para alteração/busca).
     public Funcionario(int id, String nome, String email, String matricula, String departamento) {
         super(id, nome, email);
         this.matricula = matricula;
         this.departamento = departamento;
     }
 
+    // Inclui um novo funcionário no banco de dados.
     public boolean incluirFuncionario() throws ClassNotFoundException {
         String sqlIPessoa = "INSERT INTO pessoa (nome, email) VALUES (?, ?)";
         String sqlIFuncionario = "INSERT INTO funcionario (id, matricula, departamento) VALUES (?, ?, ?)";
@@ -52,6 +58,7 @@ public class Funcionario extends Pessoa {
         }
     }
 
+    // Altera os dados de um funcionário no banco de dados.
     public boolean alterarFuncionario() throws ClassNotFoundException {
         String sqlAPessoa = "UPDATE pessoa SET nome = ?, email = ? WHERE id = ?";
         String sqlAFuncionario = "UPDATE funcionario SET matricula = ?, departamento = ? WHERE id = ?";
@@ -78,6 +85,7 @@ public class Funcionario extends Pessoa {
         }
     }
 
+    // Exclui um funcionário do banco de dados, incluindo seus projetos associados.
     public boolean excluirFuncionario() throws ClassNotFoundException {
         String sqlEProjeto = "DELETE FROM projeto WHERE id_funcionario = ?";
         String sqlEFuncionario = "DELETE FROM funcionario WHERE id = ?";
@@ -127,7 +135,7 @@ public class Funcionario extends Pessoa {
         }
     }
 
-    // Buscar funcionário por id
+    // Busca um funcionário pelo ID.
     public static Funcionario buscarPorId(int id) throws ClassNotFoundException {
         String sql = "SELECT p.nome, p.email, f.matricula, f.departamento " +
                      "FROM pessoa p JOIN funcionario f ON p.id = f.id WHERE p.id = ?";
@@ -151,7 +159,8 @@ public class Funcionario extends Pessoa {
         return null;
     }
 
-    public static List<Funcionario> listarFuncionarios() throws ClassNotFoundException{
+    // Lista todos os funcionários cadastrados.
+    public static List<Funcionario> listarFuncionarios() throws ClassNotFoundException {
         List<Funcionario> listFunc = new ArrayList<>();
         Connection con = Conexao.conectar();
         
@@ -177,12 +186,13 @@ public class Funcionario extends Pessoa {
                 System.out.println("-   -------------------------------------");
             }
         } catch (Exception e) {
-            System.err.println("Erro ao listar Funcionario " + e.getMessage());
+            System.err.println("Erro ao listar Funcionário " + e.getMessage());
         }
         
         return listFunc;
     }
 
+    // Consulta um funcionário pelo ID e imprime seus dados.
     public static Funcionario consultaPorId(int id) throws ClassNotFoundException {
         String sql = "SELECT p.nome, p.email, f.matricula, f.departamento " +
                      "FROM pessoa p JOIN funcionario f ON p.id = f.id WHERE p.id = ?";
@@ -214,7 +224,6 @@ public class Funcionario extends Pessoa {
         System.out.println("Funcionário com id " + id + " não encontrado.");
         return null;
     }
-
 
     // Getters e Setters
     public String getMatricula() {

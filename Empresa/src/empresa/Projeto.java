@@ -5,19 +5,24 @@ import java.util.ArrayList;
 import java.util.List;
 import util.Conexao;
 
+// Classe que representa um projeto. 
+// Contém métodos para gerenciar projetos no banco de dados. 
 public class Projeto {
-    private int id;
-    private String nome;
-    private String descricao;
-    private int idFuncionario;
+    private int id; // ID do projeto
+    private String nome; // Nome do projeto
+    private String descricao; // Descrição do projeto
+    private int idFuncionario; // ID do funcionário responsável pelo projeto
 
     // Construtores
+
+    // Construtor para criar um novo projeto sem ID, pois será gerado pelo banco.
     public Projeto(String nome, String descricao, int idFuncionario) {
         this.nome = nome;
         this.descricao = descricao;
         this.idFuncionario = idFuncionario;
     }
 
+    // Construtor para criar um projeto existente com ID (para alteração/busca).
     public Projeto(int id, String nome, String descricao, int idFuncionario) {
         this.id = id;
         this.nome = nome;
@@ -26,6 +31,8 @@ public class Projeto {
     }
 
     // CREATE
+
+    // Inclui um novo projeto no banco de dados.
     public boolean incluirProjeto() throws ClassNotFoundException {
         String sql = "INSERT INTO projeto (nome, descricao, id_funcionario) VALUES (?, ?, ?)";
         Connection con = Conexao.conectar();
@@ -38,7 +45,7 @@ public class Projeto {
 
             try (ResultSet generatedKeys = stm.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    this.id = generatedKeys.getInt(1);
+                    this.id = generatedKeys.getInt(1); // Atualiza o ID do projeto
                 }
             }
             return true;
@@ -49,6 +56,8 @@ public class Projeto {
     }
 
     // UPDATE
+
+    // Altera os dados de um projeto no banco de dados.
     public boolean alterarProjeto() throws ClassNotFoundException {
         String sql = "UPDATE projeto SET nome = ?, descricao = ?, id_funcionario = ? WHERE id = ?";
         Connection con = Conexao.conectar();
@@ -67,6 +76,8 @@ public class Projeto {
     }
 
     // DELETE
+
+    // Exclui um projeto do banco de dados.
     public boolean excluirProjeto() throws ClassNotFoundException {
         String sql = "DELETE FROM projeto WHERE id = ?";
         Connection con = Conexao.conectar();
@@ -82,6 +93,8 @@ public class Projeto {
     }
 
     // READ - Buscar por ID
+
+    // Busca um projeto pelo ID.
     public static Projeto buscarPorId(int id) throws ClassNotFoundException {
         String sql = "SELECT * FROM projeto WHERE id = ?";
         Connection con = Conexao.conectar();
@@ -91,11 +104,11 @@ public class Projeto {
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 return new Projeto(
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getString("descricao"),
-                    rs.getInt("id_funcionario")
-                );
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("descricao"),
+                        rs.getInt("id_funcionario")
+                        );
             }
         } catch (SQLException e) {
             System.err.println("Erro ao buscar projeto: " + e.getMessage());
@@ -104,6 +117,8 @@ public class Projeto {
     }
 
     // READ - Listar todos os projetos
+
+    // Lista todos os projetos cadastrados.
     public static List<Projeto> listarProjetos() throws ClassNotFoundException {
         List<Projeto> lista = new ArrayList<>();
         String sql = "SELECT * FROM projeto";
@@ -114,11 +129,11 @@ public class Projeto {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Projeto proj = new Projeto(
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getString("descricao"),
-                    rs.getInt("id_funcionario")
-                );
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("descricao"),
+                        rs.getInt("id_funcionario")
+                        );
                 lista.add(proj);
                 // Exibe informações
                 System.out.println("ID: " + proj.getId());
@@ -133,7 +148,9 @@ public class Projeto {
         return lista;
     }
 
-    // READ - Consulta por ID com impressão (igual consultaPorId em Funcionario)
+    // READ - Consulta por ID com impressão
+
+    // Consulta um projeto pelo ID e imprime seus dados.
     public static Projeto consultaPorId(int id) throws ClassNotFoundException {
         Projeto proj = buscarPorId(id);
         if (proj != null) {
@@ -149,11 +166,32 @@ public class Projeto {
     }
 
     // Getters e Setters
-    public int getId() { return id; }
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-    public String getDescricao() { return descricao; }
-    public void setDescricao(String descricao) { this.descricao = descricao; }
-    public int getIdFuncionario() { return idFuncionario; }
-    public void setIdFuncionario(int idFuncionario) { this.idFuncionario = idFuncionario; }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public int getIdFuncionario() {
+        return idFuncionario;
+    }
+
+    public void setIdFuncionario(int idFuncionario) {
+        this.idFuncionario = idFuncionario;
+    }
 }
